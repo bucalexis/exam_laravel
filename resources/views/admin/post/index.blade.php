@@ -70,11 +70,12 @@
                             <div class="x_title">
                                 <div class="alignright">
                                     <br>
-                                    <button class="btn btn-success" data-placement="top" data-original-title="Eliminar"
-                                            onclick='return confirm("¿Seguro que desea eliminar el post?")'>
+                                    <a href="{{ URL::to('/admin/posts/create') }}">
+                                    <button class="btn btn-success">
                                         <i class="fa fa-2x fa-plus"></i>
                                         Add a new post
                                     </button>
+                                    </a>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>

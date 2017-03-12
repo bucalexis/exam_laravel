@@ -79,7 +79,7 @@
                     </li>
                     <li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu" style="display: none">
-                            <li><a href="{{ URL::to('/admin/post') }}">Tables</a>
+                            <li><a href="{{ URL::to('/admin/posts') }}">Tables</a>
                             </li>
                             <li><a href="tables_dynamic.html">Table Dynamic</a>
                             </li>
