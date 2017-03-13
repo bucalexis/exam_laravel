@@ -52,7 +52,6 @@
                         <div class="x_panel">
                             <div class="x_title">
                                 <h2> @yield('title')
-                                    <small>sub title</small>
                                 </h2>
 
                                 <div class="clearfix"></div>
