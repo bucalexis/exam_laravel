@@ -11,6 +11,6 @@ class TaggablesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Taggable::class,5)->create();
+        factory(App\Taggable::class,15)->create();
     }
 }
