@@ -12,14 +12,25 @@
 */
 
 Route::get('/', function () {
-    return view('admin.home');
+    return redirect('post');
 });
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+/*
+ * Routes for the public profile
+ */
+Route::get('post', 'PublicController@index');
+Route::get('post/{filter}', 'PublicController@index');
+Route::get('post/{id}/{slug}', 'PublicController@show');
 
+/*
+ * Routes for the admin profile
+ */
 Route::get('admin/posts/search/{filter}', 'PostController@index');
-Route::get('admin/posts/{id}/{slug}', 'PostController@show');
+Route::get('admin/tags/search/{filter}', 'TagController@index');
+
 Route::resource('admin/posts', 'PostController');
+Route::resource('admin/tags', 'TagController');
+
 

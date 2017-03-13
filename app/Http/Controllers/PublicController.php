@@ -3,23 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Post;
-use App\Tag;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
-class PostController extends Controller
+class PublicController extends Controller
 {
 
     /*
-     * Checks if there is an user logged in
-     */
+ * Checks if there is an user logged in
+ */
     public function  __construct()
     {
-        if(!Auth::check() ){
-            $this->middleware('auth');
+        if(Auth::check() ){
+            $this->middleware('guest');
         }
     }
 
@@ -41,11 +40,10 @@ class PostController extends Controller
             $posts = Post::orderBy('updated_at','desc')->paginate(10);
         }
 
-        return view('admin.post.index')->with([
+        return view('public.post.index')->with([
             'posts' => $posts
         ]);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -54,11 +52,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        $tags = Tag::all();
-        return view('admin.post.create')->with([
-            'tags' => $tags
-
-        ]);
+        //This method is not used
+        return redirect('404');
     }
 
     /**
@@ -67,20 +62,9 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Requests\PostRequest $request)
+    public function store(Request $request)
     {
-        $post = new Post();
-        $slug= str_slug($request->title,'-');
-        $data = $request->toArray();
-        $data['slug'] = $slug;
-        $post->fill($data);
-        $post->user()->associate(Auth::user());
-        $post->save();
-        $post->tags()->sync($request->tags);
-
-        Session::flash('success', 'The post was added');
-
-        return redirect('admin/posts/create');
+        //
     }
 
     /**
@@ -91,8 +75,17 @@ class PostController extends Controller
      */
     public function show(Request $request)
     {
-        //This method is not used
-        return redirect('404');
+        $post = Post::findOrFail($request->id);
+
+        //If the slug is incorrect, it throws an error 404
+        if ($post->slug != $request->slug){
+            return redirect('404');
+        }
+
+        return view('public.post.post_info')->with([
+            'post' => $post
+        ]);
+
     }
 
     /**
@@ -103,18 +96,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post =  Post::findOrFail($id);
-        $tags = Tag::all();
-        $selectedTags = $post->tags;
-
-        //It is needed to know which tags mark as not selected
-        $diff = $tags->diff($selectedTags);
-
-        return view('admin.post.edit')->with([
-            'selectedTags' => $selectedTags,
-            'noSelectedTags'=> $diff,
-            'post'=>$post
-        ]);
+        //This method is not used
+        return redirect('404');
     }
 
     /**
@@ -124,20 +107,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Requests\PostRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $post =  Post::findOrFail($id);
-        $slug= str_slug($request->title,'-');
-        $data = $request->toArray();
-        $data['slug'] = $slug;
-        $post->fill($data);
-        $post->save();
-        $post->tags()->sync($request->tags);
-
-        Session::flash('success', 'The post was updated');
-
-        return redirect('admin/posts/'.$id.'/edit');
-
+        //
     }
 
     /**
@@ -148,11 +120,6 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post= Post::findOrFail($id);
-        $post->tags()->sync(array());
-        $post->delete();
-        Session::flash('success', 'The post '.$post->title.' was deleted');
-
-        return redirect('admin/posts');
+        //
     }
 }

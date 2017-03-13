@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Posts - index</title>
+    <title>Tag - index</title>
 
     @include('admin.partials.header')
 
@@ -30,9 +30,9 @@
                 <div class="page-title">
                     <div class="title_left">
                         <h3>
-                            Posts
+                            Tags
                             <small>
-                                All the posts we have!
+                                All the tags we have!
                             </small>
                         </h3>
                     </div>
@@ -41,7 +41,7 @@
                     <div class="title_right">
                         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                             <div class="input-group">
-                                {!! Form::open(['style' => 'display: table','method' => 'GET', 'url' => 'admin/posts/search/filter']) !!}
+                                {!! Form::open(['style' => 'display: table','method' => 'GET', 'url' => 'admin/tags/search/filter']) !!}
 
                                 <input name="filter" type="text" class="form-control" placeholder="Search for...">
                                 <span class="input-group-btn">
@@ -70,10 +70,10 @@
                             <div class="x_title">
                                 <div class="alignright">
                                     <br>
-                                    <a href="{{ URL::to('/admin/posts/create') }}">
+                                    <a href="{{ URL::to('/admin/tags/create') }}">
                                         <button class="btn btn-success">
                                             <i class="fa fa-2x fa-plus"></i>
-                                            Add a new post
+                                            Add a new tag
                                         </button>
                                     </a>
                                 </div>
@@ -88,38 +88,33 @@
                                 <table class="table table-striped responsive-utilities jambo_table bulk_action">
                                     <thead>
                                     <tr class="headings">
-                                        <th class="column-title" style="width:20%">Title</th>
-                                        <th class="column-title">Author</th>
-                                        <th class="column-title">Tags</th>
+                                        <th class="column-title" style="width:20%">Name</th>
                                         <th class="column-title">Created</th>
                                         <th class="column-title">Modified</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if ( isset( $posts) )
+                                    @if ( isset( $tags) )
 
-                                        @foreach( $posts as $post)
+                                        @foreach( $tags as $tag)
 
 
                                             <tr class="even pointer">
-                                                <td>{{ $post->title}}</td>
-                                                <td>{{ $post->user->name}}</td>
-
-                                                <td class=" ">{{ $post->tagsToString()}}</td>
-                                                <td class=" ">{{ $post->formattedCreatedAt()}}</td>
-                                                <td class=" ">{{ $post->formattedUpdatedAt()}}</td>
+                                                <td>{{ $tag->name}}</td>
+                                                <td class=" ">{{ $tag->formattedCreatedAt()}}</td>
+                                                <td class=" ">{{ $tag->formattedUpdatedAt()}}</td>
                                                 <td style="width:1%">
-                                                    <a href="{{ URL::to('/admin/posts/'.$post->id.'/edit') }}">
+                                                    <a href="{{ URL::to('/admin/tags/'.$tag->id.'/edit') }}">
                                                         <button class="btn btn-xs btn-warning btn-round"><i
                                                                     class="fa fa-2x fa-pencil"></i></button>
                                                     </a>
 
                                                 </td>
                                                 <td style="width:1%">
-                                                    {!! Form::open(['route' => ['admin.posts.destroy', $post->id], 'style' => 'display: table','method' => 'DELETE']) !!}
+                                                    {!! Form::open(['route' => ['admin.tags.destroy', $tag->id], 'style' => 'display: table','method' => 'DELETE']) !!}
                                                     <button class="btn btn-danger btn-round btn-xs tooltips"
                                                             data-placement="top" data-original-title="Eliminar"
-                                                            onclick='return confirm("Do you want to delete the post?")'>
+                                                            onclick='return confirm("Do you want to delete the tag?")'>
                                                         <i class="fa fa-2x fa-trash"></i></button>
                                                     {!! Form::close() !!}
 
@@ -135,8 +130,8 @@
 
                                 </table>
                             </div>
-                            @if (isset($posts))
-                                {!! $posts->setPath('')->appends(Request::query())->render()!!}
+                            @if (isset($tags))
+                                {!! $tags->setPath('')->appends(Request::query())->render()!!}
                             @endif
 
                         </div>
@@ -163,7 +158,7 @@
 </div>
 
 @include('admin.partials.bottom')
-@include('admin.post.partials.active_menu')
+@include('admin.tag.partials.active_menu')
 
 
 </body>

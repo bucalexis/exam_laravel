@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Controllers\DateManager;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -32,16 +33,18 @@ class Post extends Model
     }
 
     /**
-     * This value is used in the search table
-     * @return String The firsts 30 characters of the post content
+     * Convert all the tags into a single string
+     * @return String The tags separated by a comma
      */
-    public function shortContent()
+    public function tagsToString()
     {
-        if (strlen($this->content) > 30){
-            return substr($this->content,0,30) . "...";
+        $string = "";
+        foreach ($this->tags as $tag){
+            $string = $string.$tag->name.', ';
         }
 
-        return $this->content;
+        $string = rtrim($string, ', ');
+        return $string;
     }
 
     /**
@@ -50,7 +53,7 @@ class Post extends Model
      */
     public function formattedCreatedAt()
     {
-        return $this->date($this->created_at);
+        return DateManager::dateToDmy($this->created_at);
     }
 
     /**
@@ -59,19 +62,9 @@ class Post extends Model
      */
     public function formattedUpdatedAt()
     {
-        return $this->date($this->updated_at);
+        return DateManager::dateToDmy($this->updated_at);
     }
 
 
-    /**
-     * Change the format of a mysql date
-     * @param String A date in format Y-m-d H:i:s
-     * @return String A date formatted to d/m/Y
-     */
-    public function date($date)
-    {
-        $formatted=Carbon::createFromFormat('Y-m-d H:i:s', $date);
-        return $formatted->format('d/m/Y');
-    }
 
 }

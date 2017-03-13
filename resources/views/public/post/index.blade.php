@@ -22,7 +22,7 @@
 
     <div class="main_container">
 
-    @include('admin.partials.sidebar')
+    @include('public.post.partials.sidebar')
     <!-- page content -->
         <div class="right_col" role="main">
             <div class="">
@@ -41,7 +41,7 @@
                     <div class="title_right">
                         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                             <div class="input-group">
-                                {!! Form::open(['style' => 'display: table','method' => 'GET', 'url' => 'admin/posts/search/filter']) !!}
+                                {!! Form::open(['style' => 'display: table','method' => 'GET', 'url' => 'post/filter']) !!}
 
                                 <input name="filter" type="text" class="form-control" placeholder="Search for...">
                                 <span class="input-group-btn">
@@ -67,29 +67,16 @@
 
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
-                            <div class="x_title">
-                                <div class="alignright">
-                                    <br>
-                                    <a href="{{ URL::to('/admin/posts/create') }}">
-                                        <button class="btn btn-success">
-                                            <i class="fa fa-2x fa-plus"></i>
-                                            Add a new post
-                                        </button>
-                                    </a>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
 
 
                             <div class="x_content">
-                                @include('admin.partials.response')
 
 
                                 <table class="table table-striped responsive-utilities jambo_table bulk_action">
                                     <thead>
                                     <tr class="headings">
                                         <th class="column-title" style="width:20%">Title</th>
-                                        <th class="column-title">Author</th>
+                                        <th class="column-title">Autor</th>
                                         <th class="column-title">Tags</th>
                                         <th class="column-title">Created</th>
                                         <th class="column-title">Modified</th>
@@ -101,31 +88,19 @@
                                         @foreach( $posts as $post)
 
 
-                                            <tr class="even pointer">
-                                                <td>{{ $post->title}}</td>
-                                                <td>{{ $post->user->name}}</td>
+                                            <tr class="even pointer" style="cursor: pointer"
+                                                onclick="location.href = '{{URL::to('post/'.$post->id.'/'.$post->slug) }}' ">
+                                                <a href="{{URL::to('post/'.$post->id.'/'.$post->slug) }}">
+                                                    <td>{{ $post->title}}</td>
+                                                    <td>{{ $post->user->name}}</td>
 
-                                                <td class=" ">{{ $post->tagsToString()}}</td>
-                                                <td class=" ">{{ $post->formattedCreatedAt()}}</td>
-                                                <td class=" ">{{ $post->formattedUpdatedAt()}}</td>
-                                                <td style="width:1%">
-                                                    <a href="{{ URL::to('/admin/posts/'.$post->id.'/edit') }}">
-                                                        <button class="btn btn-xs btn-warning btn-round"><i
-                                                                    class="fa fa-2x fa-pencil"></i></button>
-                                                    </a>
-
-                                                </td>
-                                                <td style="width:1%">
-                                                    {!! Form::open(['route' => ['admin.posts.destroy', $post->id], 'style' => 'display: table','method' => 'DELETE']) !!}
-                                                    <button class="btn btn-danger btn-round btn-xs tooltips"
-                                                            data-placement="top" data-original-title="Eliminar"
-                                                            onclick='return confirm("Do you want to delete the post?")'>
-                                                        <i class="fa fa-2x fa-trash"></i></button>
-                                                    {!! Form::close() !!}
-
-                                                </td>
+                                                    <td class=" ">{{ $post->tagsToString()}}</td>
+                                                    <td class=" ">{{ $post->formattedCreatedAt()}}</td>
+                                                    <td class=" ">{{ $post->formattedUpdatedAt()}}</td>
+                                                </a>
 
                                             </tr>
+
 
                                         @endforeach
 
